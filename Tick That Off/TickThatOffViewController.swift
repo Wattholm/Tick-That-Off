@@ -12,8 +12,15 @@ class TickThatOffViewController: UITableViewController {
 
     var itemArray = ["Find Mike","Buy Eggos", "Destroy Demogorgon"]
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        if let items = defaults.array(forKey: "TickThatOffArray") as? [String] {
+            itemArray = items
+        }
+        
     }
 
     //MARK - Tableview Datasource Methods
@@ -55,8 +62,12 @@ class TickThatOffViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New List Item", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+           
             //what will happen once Add Item is clicked inside the UIAlert
             self.itemArray.append(textField.text!)
+            
+            self.defaults.set(self.itemArray, forKey: "TickThatOffArray")
+            
             self.tableView.reloadData()
         }
         
