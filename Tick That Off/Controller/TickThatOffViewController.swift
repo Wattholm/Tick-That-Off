@@ -7,19 +7,39 @@
 //
 
 import UIKit
+import Foundation
 
 class TickThatOffViewController: UITableViewController {
 
-    var itemArray = ["Find Mike","Buy Eggos", "Destroy Demogorgon"]
+    var itemArray: [String] = ["Find Mike","Buy Eggos","Destroy Demogorgon"]
+    var checkedArray: [Bool] = [false,true,false]
+    
+    let itemArrayKey = "defaultItems"
+    let checkedArrayKey = "defaultChecked"
     
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        if let items = defaults.array(forKey: "TickThatOffArray") as? [String] {
+        
+        //Clear UserDefaults Array Values as Needed
+        //defaults.removeObject(forKey: defaultsItemArrayKey)
+        //Problem with Course code is that you cannot now insert objects [Item] into the userdefaults property list
+        
+        if let items = defaults.array(forKey: itemArrayKey) as? [String] {
             itemArray = items
         }
+        
+        if let booleans = defaults.array(forKey: checkedArrayKey) as? [Bool] {
+            checkedArray = booleans
+        }
+        
+        tableView.reloadData()
+        
+        //let newItem = Item()
+        //newItem.title = "Find Mike Again"
+        //itemArray.append(newItem)
         
     }
 
@@ -33,7 +53,22 @@ class TickThatOffViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        cell.textLabel?.text = itemArray[indexPath.row]
+        let title = itemArray[indexPath.row]
+        let checked = checkedArray[indexPath.row]
+        
+        cell.textLabel?.text = title
+ 
+        //ternary operator usage instead of the commented out code below
+        cell.accessoryType = checked ? .checkmark : .none
+        
+//        if checked {
+//            cell.accessoryType = .checkmark
+//        } else {
+//            cell.accessoryType = .none
+//        }
+//
+        self.defaults.set(self.itemArray, forKey: self.itemArrayKey)
+        self.defaults.set(self.checkedArray, forKey: self.checkedArrayKey)
         
         return cell
     }
@@ -42,14 +77,20 @@ class TickThatOffViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Toggle checkmark accessory
-        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-           tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        } else {
-           tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        }
+        // Toggle checkmark accessory by toggling the Item.checked property
+        
+        checkedArray[indexPath.row] = !checkedArray[indexPath.row]
+
+       
+//        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
+//           tableView.cellForRow(at: indexPath)?.accessoryType = .none
+//        } else {
+//           tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+//        }
         
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        tableView.reloadData()
         
     }
     
@@ -65,8 +106,7 @@ class TickThatOffViewController: UITableViewController {
            
             //what will happen once Add Item is clicked inside the UIAlert
             self.itemArray.append(textField.text!)
-            
-            self.defaults.set(self.itemArray, forKey: "TickThatOffArray")
+            self.checkedArray.append(false)
             
             self.tableView.reloadData()
         }

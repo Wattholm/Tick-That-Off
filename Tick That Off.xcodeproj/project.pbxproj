@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A16B98621A1137D00625B5C /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16B98521A1137D00625B5C /* Item.swift */; };
 		0A340EA5218ECC840000B1FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A340EA4218ECC840000B1FF /* AppDelegate.swift */; };
 		0A340EA7218ECC840000B1FF /* TickThatOffViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A340EA6218ECC840000B1FF /* TickThatOffViewController.swift */; };
 		0A340EAA218ECC840000B1FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A340EA8218ECC840000B1FF /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A16B98521A1137D00625B5C /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		0A340EA1218ECC840000B1FF /* Tick That Off.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tick That Off.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A340EA4218ECC840000B1FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A340EA6218ECC840000B1FF /* TickThatOffViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickThatOffViewController.swift; sourceTree = "<group>"; };
@@ -35,6 +37,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A16B98721A1138300625B5C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0A16B98521A1137D00625B5C /* Item.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0A16B98821A113FD00625B5C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0A340EA8218ECC840000B1FF /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0A16B98921A1140E00625B5C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0A340EA6218ECC840000B1FF /* TickThatOffViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		0A16B98A21A1143000625B5C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0A340EAB218ECC8D0000B1FF /* Assets.xcassets */,
+				0A340EAD218ECC8D0000B1FF /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		0A340E98218ECC830000B1FF = {
 			isa = PBXGroup;
 			children = (
@@ -55,10 +90,10 @@
 			isa = PBXGroup;
 			children = (
 				0A340EA4218ECC840000B1FF /* AppDelegate.swift */,
-				0A340EA6218ECC840000B1FF /* TickThatOffViewController.swift */,
-				0A340EA8218ECC840000B1FF /* Main.storyboard */,
-				0A340EAB218ECC8D0000B1FF /* Assets.xcassets */,
-				0A340EAD218ECC8D0000B1FF /* LaunchScreen.storyboard */,
+				0A16B98721A1138300625B5C /* Model */,
+				0A16B98821A113FD00625B5C /* View */,
+				0A16B98921A1140E00625B5C /* Controller */,
+				0A16B98A21A1143000625B5C /* Supporting Files */,
 				0A340EB0218ECC8D0000B1FF /* Info.plist */,
 			);
 			path = "Tick That Off";
@@ -136,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A340EA7218ECC840000B1FF /* TickThatOffViewController.swift in Sources */,
+				0A16B98621A1137D00625B5C /* Item.swift in Sources */,
 				0A340EA5218ECC840000B1FF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
