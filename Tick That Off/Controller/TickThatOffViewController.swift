@@ -11,29 +11,42 @@ import Foundation
 
 class TickThatOffViewController: UITableViewController {
 
-    var itemArray: [String] = ["Find Mike","Buy Eggos","Destroy Demogorgon"]
-    var checkedArray: [Bool] = [false,true,false]
+    var itemArray = [Item]()
     
-    let itemArrayKey = "defaultItems"
-    let checkedArrayKey = "defaultChecked"
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+
     
-    let defaults = UserDefaults.standard
+    //Alternate Solution for using NSUserDefaults as the 'Database' - see the relevant commit
+    //var itemArray: [String] = ["Find Mike","Buy Eggos","Destroy Demogorgon"]
+    //var checkedArray: [Bool] = [false,true,false]
+    
+    //let itemArrayKey = "defaultItems"
+    //let checkedArrayKey = "defaultChecked"
+    
+    //let defaults = UserDefaults.standard
+    
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
+        //Used to print out the location in the device's filesystem where our data will be saved
+        print(dataFilePath)
+        
         //Clear UserDefaults Array Values as Needed
         //defaults.removeObject(forKey: defaultsItemArrayKey)
         //Problem with Course code is that you cannot now insert objects [Item] into the userdefaults property list
+
+        //Alternate code: see 5th commit
+//        if let items = defaults.array(forKey: itemArrayKey) as? [String] {
+//            itemArray = items
+//        }
+//
+//        if let booleans = defaults.array(forKey: checkedArrayKey) as? [Bool] {
+//            checkedArray = booleans
+//        }
         
-        if let items = defaults.array(forKey: itemArrayKey) as? [String] {
-            itemArray = items
-        }
-        
-        if let booleans = defaults.array(forKey: checkedArrayKey) as? [Bool] {
-            checkedArray = booleans
-        }
+        loadItems()
         
         tableView.reloadData()
         
@@ -53,13 +66,12 @@ class TickThatOffViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        let title = itemArray[indexPath.row]
-        let checked = checkedArray[indexPath.row]
+        let item = itemArray[indexPath.row]
         
-        cell.textLabel?.text = title
+        cell.textLabel?.text = item.title
  
         //ternary operator usage instead of the commented out code below
-        cell.accessoryType = checked ? .checkmark : .none
+        cell.accessoryType = item.checked ? .checkmark : .none
         
 //        if checked {
 //            cell.accessoryType = .checkmark
@@ -67,8 +79,9 @@ class TickThatOffViewController: UITableViewController {
 //            cell.accessoryType = .none
 //        }
 //
-        self.defaults.set(self.itemArray, forKey: self.itemArrayKey)
-        self.defaults.set(self.checkedArray, forKey: self.checkedArrayKey)
+        
+        //self.defaults.set(self.itemArray, forKey: self.itemArrayKey)
+        //self.defaults.set(self.checkedArray, forKey: self.checkedArrayKey)
         
         return cell
     }
@@ -79,8 +92,9 @@ class TickThatOffViewController: UITableViewController {
         
         // Toggle checkmark accessory by toggling the Item.checked property
         
-        checkedArray[indexPath.row] = !checkedArray[indexPath.row]
-
+        itemArray[indexPath.row].checked = !itemArray[indexPath.row].checked
+        
+        saveItems()
        
 //        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
 //           tableView.cellForRow(at: indexPath)?.accessoryType = .none
@@ -89,8 +103,6 @@ class TickThatOffViewController: UITableViewController {
 //        }
         
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        tableView.reloadData()
         
     }
     
@@ -105,10 +117,12 @@ class TickThatOffViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
            
             //what will happen once Add Item is clicked inside the UIAlert
-            self.itemArray.append(textField.text!)
-            self.checkedArray.append(false)
+            let newItem = Item()
+            newItem.title = textField.text!
+            self.itemArray.append(newItem)
             
-            self.tableView.reloadData()
+            self.saveItems()
+            
         }
         
         alert.addTextField { (alertTextField) in
@@ -119,6 +133,39 @@ class TickThatOffViewController: UITableViewController {
         alert.addAction(action)
         
         present(alert,animated: true,completion: nil)
+        
+    }
+    
+    //MARK - Model Manipulation Methods
+    
+    func saveItems() {
+        
+        let encoder = PropertyListEncoder()
+        
+        do {
+            let data = try encoder.encode(self.itemArray)
+            try data.write(to: self.dataFilePath!)
+        } catch {
+            print("Error encoding item array: \(error)")
+        }
+        
+        tableView.reloadData()
+        
+    }
+    
+    func loadItems() {
+       
+        if let data = try? Data(contentsOf: dataFilePath!) {
+
+            let decoder = PropertyListDecoder()
+            do {
+                itemArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("Error decoding data to load: \(error)")
+            }
+           
+            
+        }
         
     }
     
