@@ -13,6 +13,11 @@ import CoreData
 class TickThatOffViewController: UITableViewController {
 
     var itemArray = [Item]()
+    var selectedCategory: Category? {
+        didSet{
+            loadItems()
+        }
+    }
     
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 
@@ -51,7 +56,8 @@ class TickThatOffViewController: UITableViewController {
 //            checkedArray = booleans
 //        }
         
-        loadItems()
+        //loadItems is now triggered in the didset{} method of selectedCategory
+        //loadItems()
         
         tableView.reloadData()
         
@@ -130,6 +136,7 @@ class TickThatOffViewController: UITableViewController {
                 
             newItem.title = textField.text!
             newItem.checked = false
+            newItem.parentCategory = self.selectedCategory
             
             self.itemArray.append(newItem)
             
@@ -163,9 +170,18 @@ class TickThatOffViewController: UITableViewController {
     }
     
     //default value of request is "Item.fetchrequest()" if no argument is passed in
-    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
 
         // let request: NSFetchRequest = Item.fetchRequest()
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+        if let additionalPredicate = predicate {
+            let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [additionalPredicate, categoryPredicate])
+            request.predicate = compoundPredicate
+        } else {
+            request.predicate = categoryPredicate
+        }
         
         do {
             itemArray = try context.fetch(request)
@@ -186,12 +202,12 @@ extension TickThatOffViewController: UISearchBarDelegate {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         
         //Format string based on a query language; See NSPredicate Cheat Sheet for more info
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text! )
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text! )
         
         //Set sort descriptor array to a single element array
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
-        loadItems(with: request)
+        loadItems(with: request, predicate: predicate)
         
         
     }

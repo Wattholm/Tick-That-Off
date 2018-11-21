@@ -42,6 +42,29 @@ class CategoryViewController: UITableViewController {
         
         return cell
     }
+
+    
+    //MARK: - TableView Delegate Methods
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //perform segue, passing on the category name
+        performSegue(withIdentifier: "goToItems", sender: self)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let destinationVC = segue.destination as! TickThatOffViewController
+        
+        //must create a variable in the destinationVC; an optional of type Category that gets set once the segue completes
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categoryArray[indexPath.row]
+        }
+        
+    }
+
+    
     
     //MARK: - Data Manipulation Methods
     
@@ -100,6 +123,5 @@ class CategoryViewController: UITableViewController {
     }
     
     
-    //MARK: - TableView Delegate Methods
-   
+    
 }
