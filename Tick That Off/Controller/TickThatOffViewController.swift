@@ -8,13 +8,16 @@
 
 import UIKit
 import Foundation
+import CoreData
 
 class TickThatOffViewController: UITableViewController {
 
     var itemArray = [Item]()
     
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     
     //Alternate Solution for using NSUserDefaults as the 'Database' - see the relevant commit
     //var itemArray: [String] = ["Find Mike","Buy Eggos","Destroy Demogorgon"]
@@ -29,6 +32,8 @@ class TickThatOffViewController: UITableViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        
         
         //Used to print out the location in the device's filesystem where our data will be saved
         print(dataFilePath)
@@ -90,8 +95,11 @@ class TickThatOffViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Toggle checkmark accessory by toggling the Item.checked property
+        // Code to alternatively delete the item at specified row
+        //  context.delete(itemArray[indexPath.row])
+        //  itemArray.remove(at: indexPath.row)
         
+        // Toggle checkmark accessory by toggling the Item.checked property
         itemArray[indexPath.row].checked = !itemArray[indexPath.row].checked
         
         saveItems()
@@ -117,8 +125,12 @@ class TickThatOffViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
            
             //what will happen once Add Item is clicked inside the UIAlert
-            let newItem = Item()
+            
+            let newItem = Item(context: self.context)
+                
             newItem.title = textField.text!
+            newItem.checked = false
+            
             self.itemArray.append(newItem)
             
             self.saveItems()
@@ -139,35 +151,63 @@ class TickThatOffViewController: UITableViewController {
     //MARK - Model Manipulation Methods
     
     func saveItems() {
-        
-        let encoder = PropertyListEncoder()
-        
+       
         do {
-            let data = try encoder.encode(self.itemArray)
-            try data.write(to: self.dataFilePath!)
+            try context.save()
         } catch {
-            print("Error encoding item array: \(error)")
+            print("Error saving context: \(error)")
         }
         
         tableView.reloadData()
         
     }
     
-    func loadItems() {
-       
-        if let data = try? Data(contentsOf: dataFilePath!) {
+    //default value of request is "Item.fetchrequest()" if no argument is passed in
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
 
-            let decoder = PropertyListDecoder()
-            do {
-                itemArray = try decoder.decode([Item].self, from: data)
-            } catch {
-                print("Error decoding data to load: \(error)")
-            }
-           
-            
+        // let request: NSFetchRequest = Item.fetchRequest()
+        
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error fetching data from context: \(error)")
         }
         
+        tableView.reloadData()
     }
     
 }
 
+extension TickThatOffViewController: UISearchBarDelegate {
+    
+    //Delegate Method is required for VC to be the delegate of UISearchBar
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        
+        //Format string based on a query language; See NSPredicate Cheat Sheet for more info
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text! )
+        
+        //Set sort descriptor array to a single element array
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        loadItems(with: request)
+        
+        
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        //Remove the keyboard and cursor and show ALL the DATA when UISearchBar X button is pressed to clear the query text
+        if searchText.count == 0 {
+            
+            loadItems()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+            
+            
+        }
+    }
+    
+}
