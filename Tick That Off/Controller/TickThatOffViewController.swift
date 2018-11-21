@@ -198,15 +198,26 @@ extension TickThatOffViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        //Remove the keyboard and cursor and show ALL the DATA when UISearchBar X button is pressed to clear the query text
-        if searchText.count == 0 {
+        if searchText.count != 0 {
+            
+            let request: NSFetchRequest<Item> = Item.fetchRequest()
+            
+            //Format string based on a query language; See NSPredicate Cheat Sheet for more info
+            request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchText )
+            
+            //Set sort descriptor array to a single element array
+            request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+            
+            loadItems(with: request)
+
+        } else {
+            //Remove the keyboard and cursor and show ALL the DATA when UISearchBar X button is pressed to clear the query text
+        
             
             loadItems()
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }
-            
-            
         }
     }
     
