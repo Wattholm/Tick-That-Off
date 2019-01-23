@@ -12,8 +12,9 @@
 		0A340EAA218ECC840000B1FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A340EA8218ECC840000B1FF /* Main.storyboard */; };
 		0A340EAC218ECC8D0000B1FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A340EAB218ECC8D0000B1FF /* Assets.xcassets */; };
 		0A340EAF218ECC8D0000B1FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A340EAD218ECC8D0000B1FF /* LaunchScreen.storyboard */; };
-		0A3712A721A4E6A30020DFAE /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A3712A521A4E6A30020DFAE /* DataModel.xcdatamodeld */; };
 		0A3712A921A56BF30020DFAE /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3712A821A56BF30020DFAE /* CategoryViewController.swift */; };
+		0AF8156521F5C4830005DC90 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8156421F5C4830005DC90 /* Item.swift */; };
+		0AF8156721F5C4920005DC90 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8156621F5C4920005DC90 /* Category.swift */; };
 		3149EDF78F30747D0CD601F3 /* Pods_Tick_That_Off.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFEA7178F3A96C03822B0ACC /* Pods_Tick_That_Off.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,8 +26,9 @@
 		0A340EAB218ECC8D0000B1FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A340EAE218ECC8D0000B1FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A340EB0218ECC8D0000B1FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0A3712A621A4E6A30020DFAE /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		0A3712A821A56BF30020DFAE /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		0AF8156421F5C4830005DC90 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		0AF8156621F5C4920005DC90 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		644017C88BDF66978ED0FB4C /* Pods-Tick That Off.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tick That Off.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tick That Off/Pods-Tick That Off.release.xcconfig"; sourceTree = "<group>"; };
 		9B290053D269CABFA8E4479F /* Pods-Tick That Off.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tick That Off.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tick That Off/Pods-Tick That Off.debug.xcconfig"; sourceTree = "<group>"; };
 		FFEA7178F3A96C03822B0ACC /* Pods_Tick_That_Off.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tick_That_Off.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,7 +57,8 @@
 		0A16B98721A1138300625B5C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0A3712A521A4E6A30020DFAE /* DataModel.xcdatamodeld */,
+				0AF8156621F5C4920005DC90 /* Category.swift */,
+				0AF8156421F5C4830005DC90 /* Item.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -200,15 +203,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Tick That Off-checkManifestLockResult.txt",
 			);
@@ -222,16 +221,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tick That Off/Pods-Tick That Off-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
@@ -248,10 +243,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AF8156521F5C4830005DC90 /* Item.swift in Sources */,
 				0A3712A921A56BF30020DFAE /* CategoryViewController.swift in Sources */,
 				0A340EA7218ECC840000B1FF /* TickThatOffViewController.swift in Sources */,
-				0A3712A721A4E6A30020DFAE /* DataModel.xcdatamodeld in Sources */,
 				0A340EA5218ECC840000B1FF /* AppDelegate.swift in Sources */,
+				0AF8156721F5C4920005DC90 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,19 +449,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		0A3712A521A4E6A30020DFAE /* DataModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				0A3712A621A4E6A30020DFAE /* DataModel.xcdatamodel */,
-			);
-			currentVersion = 0A3712A621A4E6A30020DFAE /* DataModel.xcdatamodel */;
-			path = DataModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 0A340E99218ECC830000B1FF /* Project object */;
 }

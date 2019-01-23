@@ -8,11 +8,12 @@
 
 import UIKit
 import Foundation
-import CoreData
+import RealmSwift
 
 class TickThatOffViewController: UITableViewController {
 
-    var itemArray = [Item]()
+    var itemResults: Results<Item>?
+    let realm = try! Realm()
     var selectedCategory: Category? {
         didSet{
             loadItems()
@@ -21,7 +22,7 @@ class TickThatOffViewController: UITableViewController {
     
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     
     //Alternate Solution for using NSUserDefaults as the 'Database' - see the relevant commit
@@ -70,26 +71,22 @@ class TickThatOffViewController: UITableViewController {
     //MARK - Tableview Datasource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemArray.count
+        return itemResults?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        let item = itemArray[indexPath.row]
+        if let item = itemResults?[indexPath.row] {
         
-        cell.textLabel?.text = item.title
+            cell.textLabel?.text = item.title
  
-        //ternary operator usage instead of the commented out code below
-        cell.accessoryType = item.checked ? .checkmark : .none
+            cell.accessoryType = item.checked ? .checkmark : .none
         
-//        if checked {
-//            cell.accessoryType = .checkmark
-//        } else {
-//            cell.accessoryType = .none
-//        }
-//
+        } else {
+            cell.textLabel?.text = "[NO ITEMS]"
+        }
         
         //self.defaults.set(self.itemArray, forKey: self.itemArrayKey)
         //self.defaults.set(self.checkedArray, forKey: self.checkedArrayKey)
@@ -104,17 +101,19 @@ class TickThatOffViewController: UITableViewController {
         // Code to alternatively delete the item at specified row
         //  context.delete(itemArray[indexPath.row])
         //  itemArray.remove(at: indexPath.row)
-        
-        // Toggle checkmark accessory by toggling the Item.checked property
-        itemArray[indexPath.row].checked = !itemArray[indexPath.row].checked
-        
-        saveItems()
        
-//        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-//           tableView.cellForRow(at: indexPath)?.accessoryType = .none
-//        } else {
-//           tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-//        }
+        if let item = itemResults?[indexPath.row] {
+            do {
+                try realm.write {
+                    item.checked = !item.checked
+                }
+            } catch {
+                print("Error saving checked status, \(error)")
+            }
+            
+        }
+        
+        tableView.reloadData()
         
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -131,16 +130,21 @@ class TickThatOffViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
            
             //what will happen once Add Item is clicked inside the UIAlert
+
+            if let currentCategory = self.selectedCategory {
+                do {
+                    try self.realm.write{
+                        let newItem = Item()
+                        newItem.title = textField.text!
+                        newItem.dateCreated = Date()
+                        currentCategory.items.append(newItem)
+                    }
+                } catch {
+                    print("Error saving item: \(error)")
+                }
+            }
             
-            let newItem = Item(context: self.context)
-                
-            newItem.title = textField.text!
-            newItem.checked = false
-            newItem.parentCategory = self.selectedCategory
-            
-            self.itemArray.append(newItem)
-            
-            self.saveItems()
+            self.tableView.reloadData()
             
         }
         
@@ -157,73 +161,59 @@ class TickThatOffViewController: UITableViewController {
     
     //MARK - Model Manipulation Methods
     
-    func saveItems() {
-       
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context: \(error)")
-        }
-        
-        tableView.reloadData()
-        
-    }
+//    func saveItems() {
+//
+//        do {
+//            //try context.save()
+//        } catch {
+//            print("Error saving context: \(error)")
+//        }
+//
+//        tableView.reloadData()
+//
+//    }
     
     //default value of request is "Item.fetchrequest()" if no argument is passed in
-    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+    
+    func loadItems() {
 
-        // let request: NSFetchRequest = Item.fetchRequest()
-        
-        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
-        
-        if let additionalPredicate = predicate {
-            let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [additionalPredicate, categoryPredicate])
-            request.predicate = compoundPredicate
-        } else {
-            request.predicate = categoryPredicate
-        }
-        
-        do {
-            itemArray = try context.fetch(request)
-        } catch {
-            print("Error fetching data from context: \(error)")
-        }
-        
+        itemResults = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
         tableView.reloadData()
     }
     
 }
 
 extension TickThatOffViewController: UISearchBarDelegate {
-    
+
     //Delegate Method is required for VC to be the delegate of UISearchBar
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        loadItems()
         
-        //Format string based on a query language; See NSPredicate Cheat Sheet for more info
-        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text! )
+        //Slight modification to allow sorting by dateCreated with an empty search string
+        //Shows all results by Date instead of none
         
-        //Set sort descriptor array to a single element array
-        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        if searchBar.text! == "" {
+            itemResults = selectedCategory?.items.sorted(byKeyPath: "dateCreated", ascending: true)
+        } else {
+            itemResults = selectedCategory?.items.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
+        }
         
-        loadItems(with: request, predicate: predicate)
-        
+        tableView.reloadData()
         
     }
-    
+
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
+
         //Remove the keyboard and cursor and show ALL the DATA when UISearchBar X button is pressed to clear the query text
-        if searchText.count == 0 {
-            
+        if searchBar.text?.count == 0 {
             loadItems()
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
             }
-            
-            
+
+
         }
     }
-    
+
 }

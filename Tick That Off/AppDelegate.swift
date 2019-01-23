@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,39 +20,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Prints to console the file path that is associated with the App's plist file for UserDefaults
             //print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
+        do {
+            _ = try Realm()
+        } catch {
+            print("Error initializing new realm, \(error)")
+        }
+
+        // Show where realm saves data when using the simulator
+        // print(Realm.Configuration.defaultConfiguration.fileURL)
         
         return true
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-         self.saveContext()
-    }
-    
-    // MARK: - Core Data stack
-    
-    lazy var persistentContainer: NSPersistentContainer = {
- 
-        let container = NSPersistentContainer(name: "DataModel")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                 fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-    
-    // MARK: - Core Data Saving support
-    
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
     }
 
 // Removed in tutorial
