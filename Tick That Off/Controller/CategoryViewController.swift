@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import Foundation
+//import Foundation
 import RealmSwift
 
-class CategoryViewController: UITableViewController {
+class CategoryViewController: SwipeTableViewController {
     
     let realm = try! Realm()
     
@@ -30,16 +30,15 @@ class CategoryViewController: UITableViewController {
         return categoryResults?.count ?? 1
         
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+    let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
-        cell.textLabel?.text = categoryResults?[indexPath.row].name ?? "[NO CATEGORIES]"
+    cell.textLabel?.text = categoryResults?[indexPath.row].name ?? "[NO CATEGORIES]"
         
-        //cell.textLabel?.text = item.name
-        
-        return cell
+    return cell
+
     }
 
     
@@ -97,6 +96,22 @@ class CategoryViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    //MARK: - Delete Data from Swipe
+    
+    override func updateModel(at indexPath: IndexPath) {
+        if let categoryToDelete = categoryResults?[indexPath.row] {
+            do {
+                try realm.write {
+                    realm.delete(categoryToDelete)
+                }
+            } catch {
+                print("Error deleting category, \(error)")
+            }
+            
+            //Not sure why this is not part of the code after editActionsOptionsForRowAt was added
+            //tableView.reloadData()
+        }
+    }
     
     //MARK: - Add New Categories
     

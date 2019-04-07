@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import Foundation
+//import Foundation
 import RealmSwift
 
-class TickThatOffViewController: UITableViewController {
+class TickThatOffViewController: SwipeTableViewController  {
 
     var itemResults: Results<Item>?
     let realm = try! Realm()
@@ -75,8 +75,8 @@ class TickThatOffViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         if let item = itemResults?[indexPath.row] {
         
@@ -88,9 +88,6 @@ class TickThatOffViewController: UITableViewController {
             cell.textLabel?.text = "[NO ITEMS]"
         }
         
-        //self.defaults.set(self.itemArray, forKey: self.itemArrayKey)
-        //self.defaults.set(self.checkedArray, forKey: self.checkedArrayKey)
-        
         return cell
     }
     
@@ -98,7 +95,7 @@ class TickThatOffViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Code to alternatively delete the item at specified row
+        //  Code to alternatively delete the item at specified row
         //  context.delete(itemArray[indexPath.row])
         //  itemArray.remove(at: indexPath.row)
        
@@ -180,8 +177,30 @@ class TickThatOffViewController: UITableViewController {
         itemResults = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
         tableView.reloadData()
     }
+
+    //MARK: - Delete Data from Swipe
+    
+    override func updateModel(at indexPath: IndexPath) {
+        
+        if let itemToDelete = itemResults?[indexPath.row] {
+            
+            do {
+                try realm.write {
+                    realm.delete(itemToDelete)
+                }
+            } catch {
+                print("Error deleting item, \(error)")
+            }
+            
+            //Not sure why this is not part of the code after editActionsOptionsForRowAt was added
+            //tableView.reloadData()
+        }
+    }
     
 }
+
+
+
 
 extension TickThatOffViewController: UISearchBarDelegate {
 
