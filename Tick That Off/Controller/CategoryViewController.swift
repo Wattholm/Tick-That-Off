@@ -11,20 +11,51 @@ import UIKit
 import RealmSwift
 import ChameleonFramework
 
-class CategoryViewController: SwipeTableViewController {
+class CategoryViewController: UITableViewController {
     
     let realm = try! Realm()
+    
+    var notificationToken: NotificationToken? = nil
     
     var categoryResults: Results<Category>?
     
     //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        
+        tableView.rowHeight = 80
         loadCategories()
         tableView.separatorStyle = .none
+        
+        // Observe Results Notifications
+        notificationToken = categoryResults?.observe { [weak self] (changes: RealmCollectionChange) in
+            guard let tableView = self?.tableView else { return }
+            switch changes {
+            case .initial:
+                // Results are now populated and can be accessed without blocking the UI
+                tableView.reloadData()
+            case .update(_, let deletions, let insertions, let modifications):
+                // Query results have changed, so apply them to the UITableView
+                tableView.beginUpdates()
+                tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                                     with: .automatic)
+                tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0)}),
+                                     with: .automatic)
+                tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                                     with: .automatic)
+                tableView.endUpdates()
+            case .error(let error):
+                // An error occurred while opening the Realm file on the background worker thread
+                fatalError("\(error)")
+            }
+        }
+        
     }
-
+    
+    deinit {
+        notificationToken?.invalidate()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         
         //The code navigationController?.navigationBar will not work because it does not exist at this point
@@ -51,7 +82,7 @@ class CategoryViewController: SwipeTableViewController {
             navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: navBar.tintColor]
         }
         
-        tableView.reloadData()
+        //tableView.reloadData()
         
     }
     
@@ -65,7 +96,9 @@ class CategoryViewController: SwipeTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) 
+        
+        //let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         if let category = categoryResults?[indexPath.row] {
             cell.textLabel?.text = category.name
@@ -83,6 +116,13 @@ class CategoryViewController: SwipeTableViewController {
 
     }
 
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+
+        deleteCell(at: indexPath)
+        //tableView.reloadData()
+    }
+    
     
     //MARK: - TableView Delegate Methods
     
@@ -135,12 +175,12 @@ class CategoryViewController: SwipeTableViewController {
             print("Error saving categories to database: \(error)")
         }
         
-        tableView.reloadData()
+        //tableView.reloadData()
     }
     
     //MARK: - Delete Data from Swipe
     
-    override func updateModel(at indexPath: IndexPath) {
+    func deleteCell(at indexPath: IndexPath) {
         if let categoryToDelete = categoryResults?[indexPath.row] {
             do {
                 try realm.write {

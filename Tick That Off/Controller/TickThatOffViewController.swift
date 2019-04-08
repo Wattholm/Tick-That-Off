@@ -7,22 +7,25 @@
 //
 
 import UIKit
-//import Foundation
+import Foundation
 import RealmSwift
 import ChameleonFramework
 
-class TickThatOffViewController: SwipeTableViewController  {
+class TickThatOffViewController: UITableViewController  {
 
     @IBOutlet weak var searchBar: UISearchBar!
-    
-    var itemResults: Results<Item>?
+
     let realm = try! Realm()
+
+    var notificationToken: NotificationToken? = nil
+
     var selectedCategory: Category? {
         didSet{
             loadItems()
         }
     }
-    
+
+    var itemResults: Results<Item>?
     
     //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -39,9 +42,31 @@ class TickThatOffViewController: SwipeTableViewController  {
     
     override func viewDidLoad() {
         
-        super.viewDidLoad()
-        
+        tableView.rowHeight = 80
         tableView.separatorStyle = .none
+        
+        // Observe Results Notifications
+        notificationToken = itemResults?.observe { [weak self] (changes: RealmCollectionChange) in
+            guard let tableView = self?.tableView else { return }
+            switch changes {
+            case .initial:
+                // Results are now populated and can be accessed without blocking the UI
+                tableView.reloadData()
+            case .update(_, let deletions, let insertions, let modifications):
+                // Query results have changed, so apply them to the UITableView
+                tableView.beginUpdates()
+                tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                                     with: .automatic)
+                tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0)}),
+                                     with: .automatic)
+                tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                                     with: .automatic)
+                tableView.endUpdates()
+            case .error(let error):
+                // An error occurred while opening the Realm file on the background worker thread
+                fatalError("\(error)")
+            }
+        }
         
         
         //Used to print out the location in the device's filesystem where our data will be saved
@@ -65,7 +90,7 @@ class TickThatOffViewController: SwipeTableViewController  {
         //loadItems is now triggered in the didset{} method of selectedCategory
         //loadItems()
         
-        tableView.reloadData()
+        //tableView.reloadData()
         
         //let newItem = Item()
         //newItem.title = "Find Mike Again"
@@ -94,7 +119,7 @@ class TickThatOffViewController: SwipeTableViewController  {
         
         searchBar.barTintColor = UIColor(hexString: hexColor)
         
-        tableView.reloadData()
+        //tableView.reloadData()
     }
 
     //MARK - Tableview Datasource Methods
@@ -105,7 +130,7 @@ class TickThatOffViewController: SwipeTableViewController  {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
         if let item = itemResults?[indexPath.row] {
         
@@ -128,6 +153,15 @@ class TickThatOffViewController: SwipeTableViewController  {
         return cell
     }
     
+    // Tableview Method to implement Swipe Deletion
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        
+        deleteCell(at: indexPath)
+        //tableView.reloadData()
+    }
+    
+    
     //MARK - Tableview Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -147,7 +181,7 @@ class TickThatOffViewController: SwipeTableViewController  {
             
         }
         
-        tableView.reloadData()
+        //tableView.reloadData()
         
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -178,7 +212,7 @@ class TickThatOffViewController: SwipeTableViewController  {
                 }
             }
             
-            self.tableView.reloadData()
+            //self.tableView.reloadData()
             
         }
         
@@ -210,23 +244,19 @@ class TickThatOffViewController: SwipeTableViewController  {
     //default value of request is "Item.fetchrequest()" if no argument is passed in
     
     func loadItems() {
-
         itemResults = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
-        tableView.reloadData()
+        //tableView.reloadData()
     }
 
     //MARK: - Delete Data from Swipe
-    
-    override func updateModel(at indexPath: IndexPath) {
-        
+    func deleteCell(at indexPath: IndexPath) {
         if let itemToDelete = itemResults?[indexPath.row] {
-            
             do {
                 try realm.write {
                     realm.delete(itemToDelete)
                 }
             } catch {
-                print("Error deleting item, \(error)")
+                print("Error deleting category, \(error)")
             }
             
             //Not sure why this is not part of the code after editActionsOptionsForRowAt was added

@@ -13,10 +13,9 @@
 		0A340EAC218ECC8D0000B1FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A340EAB218ECC8D0000B1FF /* Assets.xcassets */; };
 		0A340EAF218ECC8D0000B1FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A340EAD218ECC8D0000B1FF /* LaunchScreen.storyboard */; };
 		0A3712A921A56BF30020DFAE /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3712A821A56BF30020DFAE /* CategoryViewController.swift */; };
-		0AD79092225986EB00603892 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD79091225986EB00603892 /* SwipeTableViewController.swift */; };
 		0AF8156521F5C4830005DC90 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8156421F5C4830005DC90 /* Item.swift */; };
 		0AF8156721F5C4920005DC90 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8156621F5C4920005DC90 /* Category.swift */; };
-		3149EDF78F30747D0CD601F3 /* Pods_Tick_That_Off.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFEA7178F3A96C03822B0ACC /* Pods_Tick_That_Off.framework */; };
+		0FD67C03F0A4293179FFB816 /* Pods_Tick_That_Off.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF1218554FDBE1F2956E7D67 /* Pods_Tick_That_Off.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,12 +27,11 @@
 		0A340EAE218ECC8D0000B1FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A340EB0218ECC8D0000B1FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A3712A821A56BF30020DFAE /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
-		0AD79091225986EB00603892 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		0AF8156421F5C4830005DC90 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		0AF8156621F5C4920005DC90 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
-		644017C88BDF66978ED0FB4C /* Pods-Tick That Off.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tick That Off.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tick That Off/Pods-Tick That Off.release.xcconfig"; sourceTree = "<group>"; };
-		9B290053D269CABFA8E4479F /* Pods-Tick That Off.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tick That Off.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tick That Off/Pods-Tick That Off.debug.xcconfig"; sourceTree = "<group>"; };
-		FFEA7178F3A96C03822B0ACC /* Pods_Tick_That_Off.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tick_That_Off.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7599283C88DEC686B3FDD56 /* Pods-Tick That Off.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tick That Off.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tick That Off/Pods-Tick That Off.debug.xcconfig"; sourceTree = "<group>"; };
+		EEE4F5128BEA32D651425576 /* Pods-Tick That Off.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tick That Off.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tick That Off/Pods-Tick That Off.release.xcconfig"; sourceTree = "<group>"; };
+		EF1218554FDBE1F2956E7D67 /* Pods_Tick_That_Off.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tick_That_Off.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,21 +39,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3149EDF78F30747D0CD601F3 /* Pods_Tick_That_Off.framework in Frameworks */,
+				0FD67C03F0A4293179FFB816 /* Pods_Tick_That_Off.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		04C96509B0A7AD56F65B1D8B /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				FFEA7178F3A96C03822B0ACC /* Pods_Tick_That_Off.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		0A16B98721A1138300625B5C /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,7 +68,6 @@
 			children = (
 				0A3712A821A56BF30020DFAE /* CategoryViewController.swift */,
 				0A340EA6218ECC840000B1FF /* TickThatOffViewController.swift */,
-				0AD79091225986EB00603892 /* SwipeTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -97,8 +86,8 @@
 			children = (
 				0A340EA3218ECC840000B1FF /* Tick That Off */,
 				0A340EA2218ECC840000B1FF /* Products */,
-				C8A703E18F01E3D6B1D39B66 /* Pods */,
-				04C96509B0A7AD56F65B1D8B /* Frameworks */,
+				CF72208F73749E3F7A722EBB /* Pods */,
+				67AD6424A849885EE358ACE8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -123,11 +112,19 @@
 			path = "Tick That Off";
 			sourceTree = "<group>";
 		};
-		C8A703E18F01E3D6B1D39B66 /* Pods */ = {
+		67AD6424A849885EE358ACE8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9B290053D269CABFA8E4479F /* Pods-Tick That Off.debug.xcconfig */,
-				644017C88BDF66978ED0FB4C /* Pods-Tick That Off.release.xcconfig */,
+				EF1218554FDBE1F2956E7D67 /* Pods_Tick_That_Off.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CF72208F73749E3F7A722EBB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E7599283C88DEC686B3FDD56 /* Pods-Tick That Off.debug.xcconfig */,
+				EEE4F5128BEA32D651425576 /* Pods-Tick That Off.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -139,11 +136,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0A340EB3218ECC8D0000B1FF /* Build configuration list for PBXNativeTarget "Tick That Off" */;
 			buildPhases = (
-				7C503E8FD19ADB1650ACB89F /* [CP] Check Pods Manifest.lock */,
+				C601D92C6E88B48FB847C2F0 /* [CP] Check Pods Manifest.lock */,
 				0A340E9D218ECC830000B1FF /* Sources */,
 				0A340E9E218ECC830000B1FF /* Frameworks */,
 				0A340E9F218ECC830000B1FF /* Resources */,
-				CE5DC72BEA2D37370CB4EACD /* [CP] Embed Pods Frameworks */,
+				5DB36599325B85760A4BEF10 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -201,46 +198,52 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7C503E8FD19ADB1650ACB89F /* [CP] Check Pods Manifest.lock */ = {
+		5DB36599325B85760A4BEF10 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tick That Off-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CE5DC72BEA2D37370CB4EACD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tick That Off/Pods-Tick That Off-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tick That Off/Pods-Tick That Off-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C601D92C6E88B48FB847C2F0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Tick That Off-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -254,7 +257,6 @@
 				0A3712A921A56BF30020DFAE /* CategoryViewController.swift in Sources */,
 				0A340EA7218ECC840000B1FF /* TickThatOffViewController.swift in Sources */,
 				0A340EA5218ECC840000B1FF /* AppDelegate.swift in Sources */,
-				0AD79092225986EB00603892 /* SwipeTableViewController.swift in Sources */,
 				0AF8156721F5C4920005DC90 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -397,7 +399,7 @@
 		};
 		0A340EB4218ECC8D0000B1FF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B290053D269CABFA8E4479F /* Pods-Tick That Off.debug.xcconfig */;
+			baseConfigurationReference = E7599283C88DEC686B3FDD56 /* Pods-Tick That Off.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -417,7 +419,7 @@
 		};
 		0A340EB5218ECC8D0000B1FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 644017C88BDF66978ED0FB4C /* Pods-Tick That Off.release.xcconfig */;
+			baseConfigurationReference = EEE4F5128BEA32D651425576 /* Pods-Tick That Off.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
