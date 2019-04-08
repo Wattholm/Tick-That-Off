@@ -25,6 +25,36 @@ class CategoryViewController: SwipeTableViewController {
         tableView.separatorStyle = .none
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        
+        //The code navigationController?.navigationBar will not work because it does not exist at this point
+        guard let navBar = navigationController?.navigationBar else {fatalError("Navigation Controller does not yet exist.")}
+        
+        //CGRect for the gradient colors of the Navigation Bar (must get dimensions of navBar + statusBar and add them)
+        let rect = CGRect(
+            origin: CGPoint(x: 0, y: 0),
+            size: CGSize(width: navBar.bounds.width, height: navBar.bounds.height + UIApplication.shared.statusBarFrame.height)
+        )
+        
+        let hexColor = GradientColor(UIGradientStyle.topToBottom,
+                                     frame: rect,
+                                     colors: [FlatRed(),FlatYellow()])
+        
+        navBar.barTintColor = hexColor
+        
+        navBar.tintColor = ContrastColorOf(hexColor, returnFlat: true)
+        
+        // Will apply to versions before iOS 11
+        navBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: navBar.tintColor]
+        
+        if #available(iOS 11.0, *) {
+            navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: navBar.tintColor]
+        }
+        
+        tableView.reloadData()
+        
+    }
+    
     //MARK: - TableView Datasource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -35,17 +65,21 @@ class CategoryViewController: SwipeTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-    let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
-    cell.textLabel?.text = categoryResults?[indexPath.row].name ?? "[NO CATEGORIES]"
-    
-    //cell.backgroundColor = UIColor.randomFlat
-    
-    let newColor = categoryResults?[indexPath.row].bgColor ?? "#ffffff"
+        if let category = categoryResults?[indexPath.row] {
+            cell.textLabel?.text = category.name
+            //cell.backgroundColor = UIColor.randomFlat
+            guard let newColor = UIColor(hexString: category.bgColor) else {fatalError()}
+            cell.backgroundColor = newColor
+            cell.textLabel?.textColor = ContrastColorOf(newColor, returnFlat: true)
+        } else {
+            cell.textLabel?.text = "[NO CATEGORIES]"
+        }
         
-    cell.backgroundColor = UIColor(hexString: newColor)
+        cell.selectionStyle = .none
         
-    return cell
+        return cell
 
     }
 

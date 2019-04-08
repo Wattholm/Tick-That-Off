@@ -9,9 +9,12 @@
 import UIKit
 //import Foundation
 import RealmSwift
+import ChameleonFramework
 
 class TickThatOffViewController: SwipeTableViewController  {
 
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     var itemResults: Results<Item>?
     let realm = try! Realm()
     var selectedCategory: Category? {
@@ -20,8 +23,7 @@ class TickThatOffViewController: SwipeTableViewController  {
         }
     }
     
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-
+    
     //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     
@@ -39,10 +41,13 @@ class TickThatOffViewController: SwipeTableViewController  {
         
         super.viewDidLoad()
         
+        tableView.separatorStyle = .none
         
         
         //Used to print out the location in the device's filesystem where our data will be saved
-        print(dataFilePath)
+        
+        //let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        //print(dataFilePath)
         
         //Clear UserDefaults Array Values as Needed
         //defaults.removeObject(forKey: defaultsItemArrayKey)
@@ -65,7 +70,31 @@ class TickThatOffViewController: SwipeTableViewController  {
         //let newItem = Item()
         //newItem.title = "Find Mike Again"
         //itemArray.append(newItem)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+
+        //The code navigationController?.navigationBar will not work because it does not exist at this point
+        guard let navBar = navigationController?.navigationBar else {fatalError("Navigation Controller does not yet exist.")}
+
+        guard let hexColor = selectedCategory?.bgColor else {fatalError()}
         
+        title = selectedCategory?.name
+        
+        navBar.barTintColor = UIColor(hexString: hexColor)
+        
+        navBar.tintColor = ContrastColorOf(UIColor(hexString: hexColor)!, returnFlat: true)
+        
+        // Will apply to versions before iOS 11
+        navBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: navBar.tintColor]
+        
+        if #available(iOS 11.0, *) {
+            navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: navBar.tintColor]
+        }
+        
+        searchBar.barTintColor = UIColor(hexString: hexColor)
+        
+        tableView.reloadData()
     }
 
     //MARK - Tableview Datasource Methods
@@ -81,7 +110,15 @@ class TickThatOffViewController: SwipeTableViewController  {
         if let item = itemResults?[indexPath.row] {
         
             cell.textLabel?.text = item.title
- 
+            
+            if let newColor = UIColor(hexString: selectedCategory!.bgColor)?.darken(byPercentage:
+                CGFloat(indexPath.row) / CGFloat(itemResults!.count) / CGFloat(2)
+                ) {
+                
+                cell.backgroundColor = newColor
+                cell.textLabel?.textColor = ContrastColorOf(newColor, returnFlat: true)
+            }
+            
             cell.accessoryType = item.checked ? .checkmark : .none
         
         } else {
