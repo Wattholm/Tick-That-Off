@@ -3,10 +3,7 @@
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## User Added Files
-Podfile
-Podfile.lock
 Pods/
-Tick\ That\ Off.xcworkspace/
 
 ## Build generated
 build/

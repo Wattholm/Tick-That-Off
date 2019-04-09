@@ -13,6 +13,7 @@
 		0A340EAC218ECC8D0000B1FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A340EAB218ECC8D0000B1FF /* Assets.xcassets */; };
 		0A340EAF218ECC8D0000B1FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A340EAD218ECC8D0000B1FF /* LaunchScreen.storyboard */; };
 		0A3712A921A56BF30020DFAE /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3712A821A56BF30020DFAE /* CategoryViewController.swift */; };
+		0A824B9E225C84F6004D37BE /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0A824B9D225C84F6004D37BE /* .gitignore */; };
 		0AF8156521F5C4830005DC90 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8156421F5C4830005DC90 /* Item.swift */; };
 		0AF8156721F5C4920005DC90 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8156621F5C4920005DC90 /* Category.swift */; };
 		0FD67C03F0A4293179FFB816 /* Pods_Tick_That_Off.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF1218554FDBE1F2956E7D67 /* Pods_Tick_That_Off.framework */; };
@@ -27,6 +28,7 @@
 		0A340EAE218ECC8D0000B1FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A340EB0218ECC8D0000B1FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A3712A821A56BF30020DFAE /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		0A824B9D225C84F6004D37BE /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		0AF8156421F5C4830005DC90 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		0AF8156621F5C4920005DC90 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		E7599283C88DEC686B3FDD56 /* Pods-Tick That Off.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tick That Off.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tick That Off/Pods-Tick That Off.debug.xcconfig"; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 		0A340E98218ECC830000B1FF = {
 			isa = PBXGroup;
 			children = (
+				0A824B9D225C84F6004D37BE /* .gitignore */,
 				0A340EA3218ECC840000B1FF /* Tick That Off */,
 				0A340EA2218ECC840000B1FF /* Products */,
 				CF72208F73749E3F7A722EBB /* Pods */,
@@ -189,6 +192,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A824B9E225C84F6004D37BE /* .gitignore in Resources */,
 				0A340EAF218ECC8D0000B1FF /* LaunchScreen.storyboard in Resources */,
 				0A340EAC218ECC8D0000B1FF /* Assets.xcassets in Resources */,
 				0A340EAA218ECC840000B1FF /* Main.storyboard in Resources */,
